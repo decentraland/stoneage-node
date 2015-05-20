@@ -18,5 +18,8 @@
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/maraoz/blockchain.js/issues"
+  },
+  "devDependencies": {
+    "gulp": "^3.8.11"
   }
 }
