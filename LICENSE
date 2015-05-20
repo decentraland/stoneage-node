@@ -2,6 +2,19 @@ The MIT License (MIT)
 
 Copyright (c) 2015 Manuel Aráoz
 
+Parts of this software are based on bitcore
+Copyright (c) 2013-2015 BitPay, Inc.
+
+Parts of this software are based on fullnode
+Copyright (c) 2014 Ryan X. Charles
+Copyright (c) 2014 reddit, Inc.
+
+Parts of this software are based on BitcoinJS
+Copyright (c) 2011 Stefan Thomas <justmoon@members.fsf.org>
+
+Parts of this software are based on BitcoinJ
+Copyright (c) 2011 Google Inc.
+
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
