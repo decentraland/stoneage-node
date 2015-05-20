@@ -11,9 +11,6 @@ var PrivateKey = bitcore.PrivateKey;
 var Networks = bitcore.Networks;
 var Base58Check = bitcore.encoding.Base58Check;
 
-var validbase58 = require('./data/bitcoind/base58_keys_valid.json');
-var invalidbase58 = require('./data/bitcoind/base58_keys_invalid.json');
-
 describe('PrivateKey', function() {
   var hex = '96c132224121b509b7d0a16245e957d9192609c5637c6228311287b1be21627a';
   var hex2 = '8080808080808080808080808080808080808080808080808080808080808080';
@@ -60,29 +57,6 @@ describe('PrivateKey', function() {
     var a = new PrivateKey(Base58Check.decode('L3T1s1TYP9oyhHpXgkyLoJFGniEgkv2Jhi138d7R2yJ9F4QdDU2m'));
     should.exist(a);
     should.exist(a.bn);
-  });
-
-  describe('bitcoind compliance', function() {
-    validbase58.map(function(d){
-      if (d[2].isPrivkey) {
-        it('should instantiate WIF private key ' + d[0] + ' with correct properties', function() {
-          var network = Networks.livenet;
-          if (d[2].isTestnet) {
-            network = Networks.testnet;
-          }
-          var key = new PrivateKey(d[0]);
-          key.compressed.should.equal(d[2].isCompressed);
-          key.network.should.equal(network);
-        });
-      }
-    });
-    invalidbase58.map(function(d){
-      it('should describe input ' + d[0].slice(0,10) + '... as invalid', function() {
-        expect(function() {
-          return new PrivateKey(d[0]);
-        }).to.throw(Error);
-      });
-    });
   });
 
   describe('instantiation', function() {

@@ -1,19 +1,19 @@
 'use strict';
 
-var bitcore = require('..');
-var BN = require('../lib/crypto/bn');
+var bitcore = require('../..');
+var BN = bitcore.crypto.BN;
 var BufferReader = bitcore.encoding.BufferReader;
 var BufferWriter = bitcore.encoding.BufferWriter;
 
 var BlockHeader = bitcore.BlockHeader;
-var fs = require('fs');
 var should = require('chai').should();
 
+var fs = require('fs');
 // https://test-insight.bitpay.com/block/000000000b99b16390660d79fcc138d2ad0c89a0d044c4201a02bdf1f61ffa11
 var dataRawBlockBuffer = fs.readFileSync('test/data/blk86756-testnet.dat');
 var dataRawBlockBinary = fs.readFileSync('test/data/blk86756-testnet.dat', 'binary');
 var dataRawId = '000000000b99b16390660d79fcc138d2ad0c89a0d044c4201a02bdf1f61ffa11';
-var data = require('./data/blk86756-testnet');
+var data = require('../data/blk86756-testnet');
 
 describe('BlockHeader', function() {
 
@@ -175,7 +175,7 @@ describe('BlockHeader', function() {
 
     it('should return the correct inspect of the genesis block', function() {
       var block = BlockHeader.fromRawBlock(dataRawBlockBinary);
-      block.inspect().should.equal('<BlockHeader '+dataRawId+'>');
+      block.inspect().should.equal('<BlockHeader ' + dataRawId + '>');
     });
 
   });
@@ -235,8 +235,8 @@ describe('BlockHeader', function() {
   });
 
   it('coverage: caches the "_id" property', function() {
-      var blockHeader = BlockHeader.fromRawBlock(dataRawBlockBuffer);
-      blockHeader.id.should.equal(blockHeader.id);
+    var blockHeader = BlockHeader.fromRawBlock(dataRawBlockBuffer);
+    blockHeader.id.should.equal(blockHeader.id);
   });
 
 });

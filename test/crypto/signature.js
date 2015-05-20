@@ -4,11 +4,6 @@ var should = require('chai').should();
 var bitcore = require('../..');
 var BN = bitcore.crypto.BN;
 var Signature = bitcore.crypto.Signature;
-var JSUtil = bitcore.util.js;
-var Interpreter = bitcore.Script.Interpreter;
-
-var sig_canonical = require('../data/bitcoind/sig_canonical');
-var sig_noncanonical = require('../data/bitcoind/sig_noncanonical');
 
 describe('Signature', function() {
 
@@ -207,29 +202,6 @@ describe('Signature', function() {
       Signature.isTxDER(sigbuf).should.equal(false);
     });
 
-
-    describe('bitcoind fixtures', function() {
-      var test_sigs = function(set, expected) {
-        var i = 0;
-        set.forEach(function(vector) {
-          if (!JSUtil.isHexa(vector)) {
-            // non-hex strings are ignored
-            return;
-          }
-          it('should be ' + (expected ? '' : 'in') + 'valid for fixture #' + i, function() {
-            var sighex = vector;
-            var interp = Interpreter();
-            interp.flags = Interpreter.SCRIPT_VERIFY_DERSIG |
-              Interpreter.SCRIPT_VERIFY_STRICTENC;
-            var result = interp.checkSignatureEncoding(new Buffer(sighex, 'hex'));
-            result.should.equal(expected);
-          });
-          i++;
-        });
-      };
-      test_sigs(sig_canonical, true);
-      test_sigs(sig_noncanonical, false);
-    });
 
   });
   describe('#hasLowS', function() {

@@ -3,23 +3,86 @@
   "version": "0.0.1",
   "description": "Blockchain data structure implementation in JavaScript",
   "main": "index.js",
+  "author": "Manuel Araoz <manuelaraoz@gmail.com>",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "gulp lint",
+    "test": "gulp test",
+    "coverage": "gulp coverage",
+    "build": "gulp"
   },
+  "contributors": [
+    {
+      "name": "Manuel Araoz",
+      "email": "manuelaraoz@gmail.com"
+    },
+    {
+      "name": "Esteban Ordano",
+      "email": "eordano@gmail.com"
+    },
+    {
+      "name": "Daniel Cousens",
+      "email": "bitcoin@dcousens.com"
+    },
+    {
+      "name": "Gordon Hall",
+      "email": "gordon@bitpay.com"
+    },
+    {
+      "name": "Jeff Garzik",
+      "email": "jgarzik@bitpay.com"
+    },
+    {
+      "name": "Kyle Drake",
+      "email": "kyle@kyledrake.net"
+    },
+    {
+      "name": "Matias Alejo Garcia",
+      "email": "ematiu@gmail.com"
+    },
+    {
+      "name": "Ryan X. Charles",
+      "email": "ryanxcharles@gmail.com"
+    },
+    {
+      "name": "Stefan Thomas",
+      "email": "moon@justmoon.net"
+    },
+    {
+      "name": "Stephen Pair",
+      "email": "stephen@bitpay.com"
+    },
+    {
+      "name": "Wei Lu",
+      "email": "luwei.here@gmail.com"
+    }
+  ],
+  "keywords": [
+    "blockchain",
+    "transaction",
+    "p2p"
+  ],
   "repository": {
     "type": "git",
     "url": "git://github.com/maraoz/blockchain.js.git"
   },
-  "keywords": [
-    "bitcoin",
-    "blockchain"
-  ],
-  "author": "maraoz",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/maraoz/blockchain.js/issues"
+  "browser": {
+    "request": "browser-request"
+  },
+  "dependencies": {
+    "bn.js": "=2.0.4",
+    "bs58": "=2.0.0",
+    "elliptic": "=3.0.3",
+    "hash.js": "=1.0.2",
+    "inherits": "=2.0.1",
+    "lodash": "=2.4.1",
+    "sha512": "=0.0.1"
   },
   "devDependencies": {
-    "gulp": "^3.8.11"
-  }
+    "bitcore-build": "bitpay/bitcore-build",
+    "brfs": "^1.2.0",
+    "chai": "^1.10.0",
+    "gulp": "^3.8.10",
+    "sinon": "^1.13.0"
+  },
+  "license": "MIT"
 }
