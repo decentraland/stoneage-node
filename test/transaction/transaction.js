@@ -18,6 +18,29 @@ var errors = bitcore.errors;
 
 describe('Transaction', function() {
 
+  it('can instantiate from constructor', function() {
+    var tx = new Transaction();
+    should.exist(tx);
+  });
+
+  var testPrevTx = 'a477af6b2667c29670467e4e0728b685ee07b240235771862318e29ddbe58458';
+  var testOwner = '02dfe18e62ab4d1b5cef8a1e90cc010acfa15f08840efe3aca5dd8256a3a01f725';
+
+  it('can instantiate from constructor and builders', function() {
+    var tx = new Transaction()
+      .from(testPrevTx)
+      .to(testOwner)
+      .colored(0xff0000ff)
+      .at(20, -10);
+    console.log(tx);
+    tx.version.should.equal(Transaction.CURRENT_VERSION);
+    tx.previous.toString('hex').should.equal(testPrevTx);
+    tx.owner.toString().should.equal(testOwner);
+    tx.color.should.equal(0xff0000ff);
+    tx.position.x.should.equal(20);
+    tx.position.y.should.equal(-10);
+  });
+
   it('should serialize and deserialize correctly a given transaction', function() {
     var transaction = new Transaction(tx_1_hex);
     transaction.uncheckedSerialize().should.equal(tx_1_hex);
@@ -29,12 +52,6 @@ describe('Transaction', function() {
     }).to.throw(errors.InvalidArgument);
   });
 
-  var testScript = 'OP_DUP OP_HASH160 20 0x88d9931ea73d60eaf7e5671efc0552b912911f2a OP_EQUALVERIFY OP_CHECKSIG';
-  var testScriptHex = '76a91488d9931ea73d60eaf7e5671efc0552b912911f2a88ac';
-  var testPrevTx = 'a477af6b2667c29670467e4e0728b685ee07b240235771862318e29ddbe58458';
-  var testTransaction = new Transaction()
-    .from('3628376146706c3c61f9ab487018d739fe8aaed1b1d977555de065759624dcd9')
-    .to('02dfe18e62ab4d1b5cef8a1e90cc010acfa15f08840efe3aca5dd8256a3a01f725');
 
   it('can serialize to a plain javascript object', function() {
     var object = testTransaction.toObject();
