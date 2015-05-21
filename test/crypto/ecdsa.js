@@ -34,7 +34,7 @@ describe('ECDSA', function() {
 
   describe('#calci', function() {
     it('calculates i correctly', function() {
-      ecdsa.randomK();
+      ecdsa.deterministicK();
       ecdsa.sign();
       ecdsa.calci();
       should.exist(ecdsa.sig.i);
@@ -66,25 +66,6 @@ describe('ECDSA', function() {
       var ecdsa2 = new ECDSA.fromString(str);
       should.exist(ecdsa2.hashbuf);
       should.exist(ecdsa2.privkey);
-    });
-
-  });
-
-  describe('#randomK', function() {
-
-    it('should generate a new random k when called twice in a row', function() {
-      ecdsa.randomK();
-      var k1 = ecdsa.k;
-      ecdsa.randomK();
-      var k2 = ecdsa.k;
-      (k1.cmp(k2) === 0).should.equal(false);
-    });
-
-    it('should generate a random k that is (almost always) greater than this relatively small number', function() {
-      ecdsa.randomK();
-      var k1 = ecdsa.k;
-      var k2 = new BN(Math.pow(2, 32)).mul(new BN(Math.pow(2, 32))).mul(new BN(Math.pow(2, 32)));
-      k2.gt(k1).should.equal(false);
     });
 
   });
@@ -184,7 +165,7 @@ describe('ECDSA', function() {
   describe('#sign', function() {
 
     it('should create a valid signature', function() {
-      ecdsa.randomK();
+      ecdsa.deterministicK();
       ecdsa.sign();
       ecdsa.verify().verified.should.equal(true);
     });
@@ -194,7 +175,7 @@ describe('ECDSA', function() {
         hashbuf: ecdsa.hashbuf.slice(0, 31),
         privkey: ecdsa.privkey
       });
-      ecdsa2.randomK();
+      ecdsa2.deterministicK();
       ecdsa2.sign.bind(ecdsa2).should.throw('hashbuf must be a 32 byte buffer');
     });
 
