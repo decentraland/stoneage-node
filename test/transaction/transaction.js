@@ -16,7 +16,7 @@ var Address = bitcore.Address;
 var Networks = bitcore.Networks;
 var errors = bitcore.errors;
 
-describe.only('Transaction', function() {
+describe('Transaction', function() {
 
   it('can instantiate from constructor', function() {
     var tx = new Transaction();

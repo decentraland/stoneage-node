@@ -1,38 +1,33 @@
 'use strict';
 
 var bitcore = require('../..');
-var BN = bitcore.crypto.BN;
+var BufferUtil = bitcore.util.buffer;
 var BufferReader = bitcore.encoding.BufferReader;
 var BufferWriter = bitcore.encoding.BufferWriter;
 
 var BlockHeader = bitcore.BlockHeader;
 var should = require('chai').should();
 
-var fs = require('fs');
-// https://test-insight.bitpay.com/block/000000000b99b16390660d79fcc138d2ad0c89a0d044c4201a02bdf1f61ffa11
-var dataRawBlockBuffer = fs.readFileSync('test/data/blk86756-testnet.dat');
-var dataRawBlockBinary = fs.readFileSync('test/data/blk86756-testnet.dat', 'binary');
-var dataRawId = '000000000b99b16390660d79fcc138d2ad0c89a0d044c4201a02bdf1f61ffa11';
-var data = require('../data/blk86756-testnet');
+describe.only('BlockHeader', function() {
 
-describe('BlockHeader', function() {
-
-  var version = data.version;
-  var prevblockidbuf = new Buffer(data.prevblockidhex, 'hex');
-  var merklerootbuf = new Buffer(data.merkleroothex, 'hex');
-  var time = data.time;
-  var bits = data.bits;
-  var nonce = data.nonce;
+  var version = 23;
+  var prevblockidbuf = '000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f';
+  var merklerootbuf = '4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b';
+  var time = 123456;
+  var bits = 0x207fffff; // genesis bitcoin: 486604799
+  var nonce = 1926;
+  var height = 300200;
   var bh = new BlockHeader({
     version: version,
+    height: height,
     prevHash: prevblockidbuf,
     merkleRoot: merklerootbuf,
     time: time,
     bits: bits,
     nonce: nonce
   });
-  var bhhex = data.blockheaderhex;
-  var bhbuf = new Buffer(bhhex, 'hex');
+  var bhbuf = bh.toBuffer();
+  var bhhex = bhbuf.toString('hex');
 
   it('should make a new blockheader', function() {
     BlockHeader(bhbuf).toBuffer().toString('hex').should.equal(bhhex);
@@ -47,20 +42,29 @@ describe('BlockHeader', function() {
   describe('#constructor', function() {
 
     it('should set all the variables', function() {
-      var bh = new BlockHeader({
+      var bh2 = new BlockHeader({
         version: version,
         prevHash: prevblockidbuf,
         merkleRoot: merklerootbuf,
         time: time,
         bits: bits,
-        nonce: nonce
+        nonce: nonce,
+        height: height,
       });
-      should.exist(bh.version);
-      should.exist(bh.prevHash);
-      should.exist(bh.merkleRoot);
-      should.exist(bh.time);
-      should.exist(bh.bits);
-      should.exist(bh.nonce);
+      should.exist(bh2.version);
+      bh2.version.should.equal(version);
+      should.exist(bh2.height);
+      bh2.height.should.equal(height);
+      should.exist(bh2.prevHash);
+      BufferUtil.reverse(bh2.prevHash).toString('hex').should.equal(prevblockidbuf.toString('hex'));
+      should.exist(bh2.merkleRoot);
+      BufferUtil.reverse(bh2.merkleRoot).toString('hex').should.equal(merklerootbuf.toString('hex'));
+      should.exist(bh2.time);
+      bh2.time.should.equal(time);
+      should.exist(bh2.bits);
+      bh2.bits.should.equal(bits);
+      should.exist(bh2.nonce);
+      bh2.nonce.should.equal(nonce);
     });
 
   });
@@ -171,34 +175,9 @@ describe('BlockHeader', function() {
 
   });
 
-  describe('#inspect', function() {
-
-    it('should return the correct inspect of the genesis block', function() {
-      var block = BlockHeader.fromRawBlock(dataRawBlockBinary);
-      block.inspect().should.equal('<BlockHeader ' + dataRawId + '>');
-    });
-
-  });
-
-  describe('#fromRawBlock', function() {
-
-    it('should instantiate from a raw block binary', function() {
-      var x = BlockHeader.fromRawBlock(dataRawBlockBinary);
-      x.version.should.equal(2);
-      new BN(x.bits).toString('hex').should.equal('1c3fffc0');
-    });
-
-    it('should instantiate from raw block buffer', function() {
-      var x = BlockHeader.fromRawBlock(dataRawBlockBuffer);
-      x.version.should.equal(2);
-      new BN(x.bits).toString('hex').should.equal('1c3fffc0');
-    });
-
-  });
-
   describe('#validTimestamp', function() {
 
-    var x = BlockHeader.fromRawBlock(dataRawBlockBuffer);
+    var x = BlockHeader(bh);
 
     it('should validate timpstamp as true', function() {
       var valid = x.validTimestamp(x);
@@ -217,25 +196,22 @@ describe('BlockHeader', function() {
   describe('#validProofOfWork', function() {
 
     it('should validate proof-of-work as true', function() {
-      var x = BlockHeader.fromRawBlock(dataRawBlockBuffer);
+      var x = BlockHeader(bh);
       var valid = x.validProofOfWork(x);
       valid.should.equal(true);
-
     });
 
     it('should validate proof of work as false because incorrect proof of work', function() {
-      var x = BlockHeader.fromRawBlock(dataRawBlockBuffer);
-      var nonce = x.nonce;
-      x.nonce = 0;
+      var x = new BlockHeader(bh);
+      x.nonce -= 1;
       var valid = x.validProofOfWork(x);
       valid.should.equal(false);
-      x.nonce = nonce;
     });
 
   });
 
   it('coverage: caches the "_id" property', function() {
-    var blockHeader = BlockHeader.fromRawBlock(dataRawBlockBuffer);
+    var blockHeader = new BlockHeader(bh);
     blockHeader.id.should.equal(blockHeader.id);
   });
 
