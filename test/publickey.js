@@ -55,24 +55,21 @@ describe('PublicKey', function() {
 
     it('problematic secp256k1 public keys', function() {
 
-      var knownKeys = [
-        {
-          wif: 'KzsjKq2FVqVuQv2ueHVFuB65A9uEZ6S1L6F8NuokCrE3V3kE3Ack',
-          priv: '6d1229a6b24c2e775c062870ad26bc261051e0198c67203167273c7c62538846',
-          pub: '03d6106302d2698d6a41e9c9a114269e7be7c6a0081317de444bb2980bf9265a01',
-          pubx: 'd6106302d2698d6a41e9c9a114269e7be7c6a0081317de444bb2980bf9265a01',
-          puby: 'e05fb262e64b108991a29979809fcef9d3e70cafceb3248c922c17d83d66bc9d'
-        },
-        {
-          wif: 'L5MgSwNB2R76xBGorofRSTuQFd1bm3hQMFVf3u2CneFom8u1Yt7G',
-          priv: 'f2cc9d2b008927db94b89e04e2f6e70c180e547b3e5e564b06b8215d1c264b53',
-          pub: '03e275faa35bd1e88f5df6e8f9f6edb93bdf1d65f4915efc79fd7a726ec0c21700',
-          pubx: 'e275faa35bd1e88f5df6e8f9f6edb93bdf1d65f4915efc79fd7a726ec0c21700',
-          puby: '367216cb35b086e6686d69dddd822a8f4d52eb82ac5d9de18fdcd9bf44fa7df7'
-        }
-      ];
+      var knownKeys = [{
+        wif: 'KzsjKq2FVqVuQv2ueHVFuB65A9uEZ6S1L6F8NuokCrE3V3kE3Ack',
+        priv: '6d1229a6b24c2e775c062870ad26bc261051e0198c67203167273c7c62538846',
+        pub: '03d6106302d2698d6a41e9c9a114269e7be7c6a0081317de444bb2980bf9265a01',
+        pubx: 'd6106302d2698d6a41e9c9a114269e7be7c6a0081317de444bb2980bf9265a01',
+        puby: 'e05fb262e64b108991a29979809fcef9d3e70cafceb3248c922c17d83d66bc9d'
+      }, {
+        wif: 'L5MgSwNB2R76xBGorofRSTuQFd1bm3hQMFVf3u2CneFom8u1Yt7G',
+        priv: 'f2cc9d2b008927db94b89e04e2f6e70c180e547b3e5e564b06b8215d1c264b53',
+        pub: '03e275faa35bd1e88f5df6e8f9f6edb93bdf1d65f4915efc79fd7a726ec0c21700',
+        pubx: 'e275faa35bd1e88f5df6e8f9f6edb93bdf1d65f4915efc79fd7a726ec0c21700',
+        puby: '367216cb35b086e6686d69dddd822a8f4d52eb82ac5d9de18fdcd9bf44fa7df7'
+      }];
 
-      for(var i = 0; i < knownKeys.length; i++) {
+      for (var i = 0; i < knownKeys.length; i++) {
         var privkey = new PrivateKey(knownKeys[i].wif);
         var pubkey = privkey.toPublicKey();
         pubkey.toString().should.equal(knownKeys[i].pub);
@@ -102,20 +99,20 @@ describe('PublicKey', function() {
     });
 
     it('from a hex encoded DER string', function() {
-      var pk = new PublicKey('041ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a7baad41d04514751e6851f5304fd243751703bed21b914f6be218c0fa354a341');
+      var pk = new PublicKey('031ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a');
       should.exist(pk.point);
       pk.point.getX().toString(16).should.equal('1ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a');
     });
 
     it('from a hex encoded DER buffer', function() {
-      var pk = new PublicKey(new Buffer('041ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a7baad41d04514751e6851f5304fd243751703bed21b914f6be218c0fa354a341', 'hex'));
+      var pk = new PublicKey(new Buffer('031ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a', 'hex'));
       should.exist(pk.point);
       pk.point.getX().toString(16).should.equal('1ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a');
     });
 
     it('from a point', function() {
       var p = new Point('86a80a5a2bfc48dddde2b0bd88bd56b0b6ddc4e6811445b175b90268924d7d48',
-                        '3b402dfc89712cfe50963e670a0598e6b152b3cd94735001cdac6794975d3afd');
+        '3b402dfc89712cfe50963e670a0598e6b152b3cd94735001cdac6794975d3afd');
       var a = new PublicKey(p);
       should.exist(a.point);
       a.point.toString().should.equal(p.toString());
@@ -126,7 +123,7 @@ describe('PublicKey', function() {
   });
 
 
-  describe('#getValidationError', function(){
+  describe('#getValidationError', function() {
 
     it('should recieve an invalid point error', function() {
       var error = PublicKey.getValidationError(invalidPoint);
@@ -137,11 +134,6 @@ describe('PublicKey', function() {
     it('should recieve a boolean as false', function() {
       var valid = PublicKey.isValid(invalidPoint);
       valid.should.equal(false);
-    });
-
-    it('should recieve a boolean as true for uncompressed', function() {
-      var valid = PublicKey.isValid('041ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a7baad41d04514751e6851f5304fd243751703bed21b914f6be218c0fa354a341');
-      valid.should.equal(true);
     });
 
     it('should recieve a boolean as true for compressed', function() {
@@ -155,7 +147,7 @@ describe('PublicKey', function() {
 
     it('should instantiate from a point', function() {
       var p = new Point('86a80a5a2bfc48dddde2b0bd88bd56b0b6ddc4e6811445b175b90268924d7d48',
-                        '3b402dfc89712cfe50963e670a0598e6b152b3cd94735001cdac6794975d3afd');
+        '3b402dfc89712cfe50963e670a0598e6b152b3cd94735001cdac6794975d3afd');
       var b = PublicKey.fromPoint(p);
       should.exist(b.point);
       b.point.toString().should.equal(p.toString());
@@ -174,7 +166,6 @@ describe('PublicKey', function() {
       var json = JSON.stringify({
         x: '1ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a',
         y: '7baad41d04514751e6851f5304fd243751703bed21b914f6be218c0fa354a341',
-        compressed: false
       });
       PublicKey.fromJSON(json).toJSON().should.deep.equal(json);
     });
@@ -184,7 +175,9 @@ describe('PublicKey', function() {
         return PublicKey.fromJSON('{"x": "1ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a"}');
       }).to.throw();
       // coverage
-      PublicKey._isJSON({x: '1ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a'}).should.equal(false);
+      PublicKey._isJSON({
+        x: '1ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a'
+      }).should.equal(false);
     });
 
     it('fails if invalid JSON is provided', function() {
@@ -195,7 +188,7 @@ describe('PublicKey', function() {
 
     it('works for X starting with 0x00', function() {
       var a = new PublicKey('030589ee559348bd6a7325994f9c8eff12bd5d73cc683142bd0dd1a17abc99b0dc');
-      var b = new PublicKey('03'+a.toObject().x);
+      var b = new PublicKey('03' + a.toObject().x);
       b.toString().should.equal(a.toString());
     });
 
@@ -217,12 +210,6 @@ describe('PublicKey', function() {
 
   describe('#fromBuffer', function() {
 
-    it('should parse this uncompressed public key', function() {
-      var pk = PublicKey.fromBuffer(new Buffer('041ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a7baad41d04514751e6851f5304fd243751703bed21b914f6be218c0fa354a341', 'hex'));
-      pk.point.getX().toString(16).should.equal('1ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a');
-      pk.point.getY().toString(16).should.equal('7baad41d04514751e6851f5304fd243751703bed21b914f6be218c0fa354a341');
-    });
-
     it('should parse this compressed public key', function() {
       var pk = PublicKey.fromBuffer(new Buffer('031ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a', 'hex'));
       pk.point.getX().toString(16).should.equal('1ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a');
@@ -241,21 +228,9 @@ describe('PublicKey', function() {
       }).should.throw('Must be a hex buffer of DER encoded public key');
     });
 
-    it('should throw error because buffer is the incorrect length', function() {
-      (function() {
-        PublicKey.fromBuffer(new Buffer('041ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a7baad41d04514751e6851f5304fd243751703bed21b914f6be218c0fa354a34112', 'hex'));
-      }).should.throw('Length of x and y must be 32 bytes');
-    });
-
   });
 
   describe('#fromDER', function() {
-
-    it('should parse this uncompressed public key', function() {
-      var pk = PublicKey.fromDER(new Buffer('041ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a7baad41d04514751e6851f5304fd243751703bed21b914f6be218c0fa354a341', 'hex'));
-      pk.point.getX().toString(16).should.equal('1ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a');
-      pk.point.getY().toString(16).should.equal('7baad41d04514751e6851f5304fd243751703bed21b914f6be218c0fa354a341');
-    });
 
     it('should parse this compressed public key', function() {
       var pk = PublicKey.fromDER(new Buffer('031ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a', 'hex'));
@@ -267,16 +242,6 @@ describe('PublicKey', function() {
       (function() {
         PublicKey.fromDER(new Buffer('091ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a', 'hex'));
       }).should.throw();
-    });
-
-  });
-
-  describe('#fromString', function() {
-
-    it('should parse this known valid public key', function() {
-      var pk = PublicKey.fromString('041ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a7baad41d04514751e6851f5304fd243751703bed21b914f6be218c0fa354a341');
-      pk.point.getX().toString(16).should.equal('1ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a');
-      pk.point.getY().toString(16).should.equal('7baad41d04514751e6851f5304fd243751703bed21b914f6be218c0fa354a341');
     });
 
   });
@@ -308,12 +273,6 @@ describe('PublicKey', function() {
       pk.toBuffer().toString('hex').should.equal('031ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a');
     });
 
-    it('should return this uncompressed DER format', function() {
-      var x = BN.fromBuffer(new Buffer('1ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a', 'hex'));
-      var pk = PublicKey.fromX(true, x);
-      pk.toBuffer().toString('hex').should.equal('031ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a');
-    });
-
   });
 
   describe('#toDER', function() {
@@ -322,11 +281,6 @@ describe('PublicKey', function() {
       var x = BN.fromBuffer(new Buffer('1ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a', 'hex'));
       var pk = PublicKey.fromX(true, x);
       pk.toDER().toString('hex').should.equal('031ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a');
-    });
-
-    it('should return this uncompressed DER format', function() {
-      var pk = PublicKey.fromString('041ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a7baad41d04514751e6851f5304fd243751703bed21b914f6be218c0fa354a341');
-      pk.toDER().toString('hex').should.equal('041ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a7baad41d04514751e6851f5304fd243751703bed21b914f6be218c0fa354a341');
     });
   });
 
@@ -341,11 +295,6 @@ describe('PublicKey', function() {
   });
 
   describe('#inspect', function() {
-    it('should output known uncompressed pubkey for console', function() {
-      var pubkey = PublicKey.fromString('041ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a7baad41d04514751e6851f5304fd243751703bed21b914f6be218c0fa354a341');
-      pubkey.inspect().should.equal('<PublicKey: 041ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a7baad41d04514751e6851f5304fd243751703bed21b914f6be218c0fa354a341, uncompressed>');
-    });
-
     it('should output known compressed pubkey for console', function() {
       var pubkey = PublicKey.fromString('031ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a');
       pubkey.inspect().should.equal('<PublicKey: 031ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a>');
@@ -366,20 +315,6 @@ describe('PublicKey', function() {
       expect(function() {
         return PublicKey.fromString(hex);
       }).to.not.throw();
-    });
-
-    it('should throw an error if pubkey is invalid', function() {
-      var hex = '041ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a0000000000000000000000000000000000000000000000000000000000000000';
-      (function() {
-        return PublicKey.fromString(hex);
-      }).should.throw('Invalid x,y value for curve, cannot equal 0.');
-    });
-
-    it('should throw an error if pubkey is invalid', function() {
-      var hex = '041ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a00000000000000000000000000000000000000000000000000000000000000FF';
-      (function() {
-        return PublicKey.fromString(hex);
-      }).should.throw('Invalid y value for curve.');
     });
 
     it('should throw an error if pubkey is infinity', function() {
