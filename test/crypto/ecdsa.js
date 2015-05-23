@@ -206,13 +206,6 @@ describe('ECDSA', function() {
         var sig = ECDSA.sign(ecdsa.hashbuf, ecdsa.privkey);
         (sig instanceof Signature).should.equal(true);
       });
-      it('should produce a signature, and be different when called twice', function() {
-        ecdsa.signRandomK();
-        should.exist(ecdsa.sig);
-        var ecdsa2 = ECDSA(ecdsa);
-        ecdsa2.signRandomK();
-        ecdsa.sig.toString().should.not.equal(ecdsa2.sig.toString());
-      });
     });
 
     describe('#verify', function() {
@@ -222,7 +215,7 @@ describe('ECDSA', function() {
         ecdsa.verify().verified.should.equal(true);
       });
       it('should verify this known good signature', function() {
-        ecdsa.signRandomK();
+        ecdsa.sign();
         ecdsa.verify().verified.should.equal(true);
       });
       it('should verify a valid signature, and unverify an invalid signature', function() {
