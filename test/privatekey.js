@@ -317,21 +317,6 @@ describe('PrivateKey', function() {
       var privkey = new PrivateKey(new BN(new Buffer(privhex, 'hex')));
       privkey.publicKey.toString().should.equal(pubhex);
     });
-
-    it('should convert this known PrivateKey to known PublicKey and preserve compressed=true', function() {
-      var privwif = 'L3T1s1TYP9oyhHpXgkyLoJFGniEgkv2Jhi138d7R2yJ9F4QdDU2m';
-      var privkey = new PrivateKey(privwif, 'livenet');
-      var pubkey = privkey.toPublicKey();
-      pubkey.compressed.should.equal(true);
-    });
-
-    it('should convert this known PrivateKey to known PublicKey and preserve compressed=false', function() {
-      var privwif = '92jJzK4tbURm1C7udQXxeCBvXHoHJstDXRxAMouPG1k1XUaXdsu';
-      var privkey = new PrivateKey(privwif, 'testnet');
-      var pubkey = privkey.toPublicKey();
-      pubkey.compressed.should.equal(false);
-    });
-
   });
 
 });
