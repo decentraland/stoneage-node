@@ -8,7 +8,7 @@ var BufferWriter = bitcore.encoding.BufferWriter;
 var BlockHeader = bitcore.BlockHeader;
 var should = require('chai').should();
 
-describe.only('BlockHeader', function() {
+describe('BlockHeader', function() {
 
   var version = 23;
   var prevblockidbuf = '000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f';
@@ -213,6 +213,24 @@ describe.only('BlockHeader', function() {
   it('coverage: caches the "_id" property', function() {
     var blockHeader = new BlockHeader(bh);
     blockHeader.id.should.equal(blockHeader.id);
+  });
+
+  it('create', function() {
+    var data = {
+      prevHash: bh.id,
+      height: 2000,
+      time: 123455678,
+      merkleRoot: '0000000000000000000000000000000000000000000000000000000000000000'
+    };
+    var header = BlockHeader.create(data);
+    header.validProofOfWork().should.equal(true);
+    header.version.should.equal(BlockHeader.Constants.CURRENT_VERSION);
+    header.height.should.equal(2000);
+    header.time.should.equal(123455678);
+    header.merkleRoot.toString('hex')
+      .should.equal('0000000000000000000000000000000000000000000000000000000000000000');
+    header.bits.should.equal(545259519);
+    header.nonce.should.equal(0);
   });
 
 });
