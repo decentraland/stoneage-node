@@ -34,6 +34,7 @@ blockchain.errors = require('./lib/errors');
 // main bitcoin library
 blockchain.Block = require('./lib/block');
 blockchain.BlockHeader = require('./lib/block/blockheader');
+blockchain.Miner = require('./lib/block/miner');
 blockchain.HDPrivateKey = require('./lib/hdprivatekey.js');
 blockchain.HDPublicKey = require('./lib/hdpublickey.js');
 blockchain.Networks = require('./lib/networks');
