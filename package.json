@@ -78,7 +78,7 @@
     "sha512": "=0.0.1"
   },
   "devDependencies": {
-    "bitcore-build": "bitpay/bitcore-build",
+    "bitcore-build": "maraoz/bitcore-build#e848a8ba612366ad98abd20e229570dc061a4288",
     "brfs": "^1.2.0",
     "chai": "^1.10.0",
     "gulp": "^3.8.10",

@@ -11,6 +11,9 @@ var PrivateKey = bitcore.PrivateKey;
 
 describe('Miner', function() {
 
+
+  this.timeout(10000);
+
   var id = new PrivateKey('ecf4fd8e3c6b7cebeb028ceada16a24e266869e352e80971438bbb03db1c54e4');
   var opts = {};
   var coinbases = [];
@@ -128,6 +131,16 @@ describe('Miner', function() {
       .colored(0x00ff00ff)
       .sign(id);
     miner.addTransaction(tx);
+    miner.run();
+  });
+
+  it('mines first block without transactions and higher difficutly', function(cb) {
+    opts.bits = 0x1e0fffff; // 00000fffff000000000000000000000000000000000000000000000000000000
+    var miner = new Miner(opts);
+    miner.on('block', function(block) {
+      block.header.validProofOfWork().should.equal(true);
+      cb();
+    });
     miner.run();
   });
 
