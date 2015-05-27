@@ -4,6 +4,8 @@ var bitcore = require('../..');
 var BufferUtil = bitcore.util.buffer;
 var BufferReader = bitcore.encoding.BufferReader;
 var BufferWriter = bitcore.encoding.BufferWriter;
+var _ = bitcore.deps._;
+var BN = bitcore.crypto.BN;
 
 var BlockHeader = bitcore.BlockHeader;
 var should = require('chai').should();
@@ -232,5 +234,27 @@ describe('BlockHeader', function() {
     header.bits.should.equal(545259519);
     header.nonce.should.equal(0);
   });
+
+
+  describe.skip('getBits and getTargetDifficulty', function() {
+
+    var data = [
+      [0x207fffff, '7fffff0000000000000000000000000000000000000000000000000000000000'],
+      
+    ];
+    _.each(data, function(datum) {
+      var bits = datum[0];
+      var diff = BN.fromBuffer(new Buffer(datum[1],'hex'));
+      it('should work for ' + bits.toString(16), function() {
+        BlockHeader.getTargetDifficulty(bits).toString('hex').should.equal(diff.toString('hex'));
+        BlockHeader.getBits(diff).should.equal(bits);
+        BlockHeader.getTargetDifficulty(BlockHeader.getBits(diff)).should.equal(diff);
+        BlockHeader.getBits(BlockHeader.getTargetDifficulty(bits)).should.equal(bits);
+      });
+
+    });
+
+  });
+
 
 });

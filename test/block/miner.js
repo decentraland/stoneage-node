@@ -9,7 +9,7 @@ var Transaction = bitcore.Transaction;
 var Miner = bitcore.Miner;
 var PrivateKey = bitcore.PrivateKey;
 
-describe.only('Miner', function() {
+describe('Miner', function() {
 
   var id = new PrivateKey('ecf4fd8e3c6b7cebeb028ceada16a24e266869e352e80971438bbb03db1c54e4');
   var opts = {};
@@ -132,8 +132,8 @@ describe.only('Miner', function() {
   });
 
   it('mines first block without transactions and higher difficutly', function(cb) {
+    opts.bits = 0x1e0fffff; // 00000fffff000000000000000000000000000000000000000000000000000000
     var miner = new Miner(opts);
-    opts.difficulty = 2;
     miner.on('block', function(block) {
       block.header.validProofOfWork().should.equal(true);
       cb();
