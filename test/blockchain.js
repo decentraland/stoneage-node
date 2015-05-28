@@ -10,7 +10,7 @@ var PrivateKey = bitcore.PrivateKey;
 var Blockchain = bitcore.Blockchain;
 var Miner = bitcore.Miner;
 
-describe.only('Blockchain', function() {
+describe('Blockchain', function() {
 
   it('Creates a blockchain with the genesis block', function() {
     var blockchain = new Blockchain();
@@ -19,12 +19,12 @@ describe.only('Blockchain', function() {
   });
 
   var privKey = new PrivateKey('ecf4fd8e3c6b7cebeb028ceada16a24e266869e352e80971438bbb03db1c54e4');
-  var mineBlock = function(blockchain, transactions, callback) {
+  var mineBlock = function(blockchain, transactions, color, callback) {
     var opts = {};
     opts.coinbase = new Transaction()
       .at(0, blockchain.getTipBlock().height + 1)
       .to(privKey.publicKey)
-      .colored(0xff0000ff);
+      .colored(color || 0xff0000ff);
     opts.previous = blockchain.getTipBlock();
     opts.time = 1432594281;
     var miner = new Miner(opts);
@@ -39,7 +39,7 @@ describe.only('Blockchain', function() {
     var blockchain = new Blockchain();
     blockchain.proposeNewBlock(Block.genesis);
 
-    mineBlock(blockchain, [], function(block) {
+    mineBlock(blockchain, [], null, function(block) {
       blockchain.proposeNewBlock(block);
       blockchain.tip.should.equal(block.hash);
       cb();
@@ -54,7 +54,7 @@ describe.only('Blockchain', function() {
       blockchain.proposeNewBlock(Block.genesis);
 
       var block1, block2;
-      mineBlock(blockchain, [], function(block) {
+      mineBlock(blockchain, [], null, function(block) {
         block1 = block;
         blockchain.proposeNewBlock(block);
 
@@ -64,7 +64,7 @@ describe.only('Blockchain', function() {
           .colored(0x00fff0ff)
           .sign(privKey);
 
-        mineBlock(blockchain, [tx], function(block) {
+        mineBlock(blockchain, [tx], null, function(block) {
           block2 = block;
           blockchain.proposeNewBlock(block);
           blockchain.tip.should.equal(block2.hash);
@@ -80,7 +80,7 @@ describe.only('Blockchain', function() {
       blockchain.proposeNewBlock(Block.genesis);
 
       var block1, block2;
-      mineBlock(blockchain, [], function(block) {
+      mineBlock(blockchain, [], null, function(block) {
         block1 = block;
         blockchain.proposeNewBlock(block);
 
@@ -93,7 +93,7 @@ describe.only('Blockchain', function() {
         // Corrupt signature
         tx.signature.r.words[1]++;
 
-        mineBlock(blockchain, [tx], function(block) {
+        mineBlock(blockchain, [tx], null, function(block) {
           block2 = block;
           (function() {
             blockchain.proposeNewBlock(block);
@@ -103,6 +103,47 @@ describe.only('Blockchain', function() {
         });
       })
 
+    });
+  });
+
+  describe('reorg', function() {
+    it('Case: 1 block back; two forward; "move to niece"', function(callback) {
+      // Genesis -> A
+      //      \
+      //       `----> B --> C
+      // First propose block A, then propose block B (no change), then propose C
+      var blockchain = new Blockchain();
+      blockchain.proposeNewBlock(Block.genesis);
+
+      var blockchain2 = new Blockchain();
+      blockchain2.proposeNewBlock(Block.genesis);
+
+      mineBlock(blockchain, [], null, function(A) {
+        blockchain.proposeNewBlock(A);
+
+        var tx = new Transaction()
+          .from(A.transactions[0])
+          .to(privKey.publicKey)
+          .colored(0x00fff0ff)
+          .sign(privKey);
+
+        mineBlock(blockchain2, [], 0xFFFFFFFF, function(B) {
+          blockchain2.proposeNewBlock(B);
+
+          mineBlock(blockchain2, [], null, function(C) {
+
+            blockchain.proposeNewBlock(B);
+            blockchain.tip.should.equal(A.hash);
+            blockchain.proposeNewBlock(C);
+            blockchain.tip.should.equal(C.hash);
+
+            blockchain.pixels['0_1'].should.equal(B.transactions[0]);
+            blockchain.pixels['0_2'].should.equal(C.transactions[0]);
+
+            callback();
+          });
+        });
+      });
     });
   });
 });
