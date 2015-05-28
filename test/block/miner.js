@@ -36,16 +36,12 @@ describe('Miner', function() {
     should.exist(miner);
   });
 
-  it.only('mines ' + coinbases.length + ' blocks in a row without txs', function(cb) {
-    opts.bits = 0x1e0fffff;
+  it('mines ' + coinbases.length + ' blocks in a row without txs', function(cb) {
     var miner = new Miner(opts);
     var n = 0;
-    console.time('block ' + n);
     miner.on('block', function(block) {
-      console.timeEnd('block ' + n);
       n += 1;
-      console.time('block ' + n);
-      console.log('block', block.header.height, block.id, block.header.nonce);
+      //console.log('block', block.header.height, block.id, 'nonce', block.header.nonce);
       block.header.validProofOfWork().should.equal(true);
       blockchain.push(block);
       block.header.height.should.equal(n);
