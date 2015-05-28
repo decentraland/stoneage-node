@@ -69,6 +69,7 @@
     "request": "browser-request"
   },
   "dependencies": {
+    "bluebird": "^2.9.26",
     "bn.js": "=2.0.4",
     "bs58": "=2.0.0",
     "elliptic": "=3.0.3",
