@@ -149,6 +149,7 @@ describe('Miner', function() {
     var miner = new Miner(opts);
     miner.on('block', function(block) {
       block.header.validProofOfWork().should.equal(true);
+      block.transactions.length.should.equal(2);
       cb();
     });
     for (var i = 0; i<100; i++) {
