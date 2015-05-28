@@ -134,7 +134,7 @@ describe('Miner', function() {
     miner.run();
   });
 
-  it('mines first block without transactions and higher difficutly', function(cb) {
+  it('mines first block without transactions and higher difficulty', function(cb) {
     opts.bits = 0x1e0fffff; // 00000fffff000000000000000000000000000000000000000000000000000000
     var miner = new Miner(opts);
     miner.on('block', function(block) {
@@ -144,7 +144,7 @@ describe('Miner', function() {
     miner.run();
   });
 
-  it('mines first block with one transaction and higher difficutly', function(cb) {
+  it('mines first block with one transaction and higher difficulty', function(cb) {
     opts.bits = 0x1e0fffff; // 00000fffff000000000000000000000000000000000000000000000000000000
     var miner = new Miner(opts);
     miner.on('block', function(block) {
@@ -164,7 +164,7 @@ describe('Miner', function() {
     miner.run();
   });
 
-  it('mines first block with two transactions and moderate difficutly', function(cb) {
+  it('mines first block with two transactions and moderate difficulty', function(cb) {
     opts.bits = 0x1f0fffff; // 00000fffff000000000000000000000000000000000000000000000000000000
     var miner = new Miner(opts);
     miner.on('block', function(block) {
