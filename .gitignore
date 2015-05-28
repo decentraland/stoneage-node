@@ -29,5 +29,5 @@ node_modules
 *.swp
 *.swo
 
-blockchain.js.js
+decentraland-core.js
 tests.js
