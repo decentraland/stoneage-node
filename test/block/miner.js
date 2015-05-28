@@ -144,5 +144,26 @@ describe('Miner', function() {
     miner.run();
   });
 
+  it('mines first block with one transaction and higher difficutly', function(cb) {
+    opts.bits = 0x1e0fffff; // 00000fffff000000000000000000000000000000000000000000000000000000
+    var miner = new Miner(opts);
+    miner.on('block', function(block) {
+      block.header.validProofOfWork().should.equal(true);
+      cb();
+    });
+    for (var i = 0; i<100; i++) {
+      miner.work();
+    }
+    var tx = new Transaction()
+      .from(coinbases[1])
+      .to(id.publicKey)
+      .colored(0x00ff00ff)
+      .sign(id);
+    miner.addTransaction(tx);
+    miner.run();
+
+
+  });
+
 
 });
