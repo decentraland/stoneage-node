@@ -1,5 +1,5 @@
-# blockchain.js
-Blockchain data structure implementation in JavaScript
+# decentraland-core
+Blockchain-based decentralized land implementation in JavaScript
 
 This is a clone of bitcore's codebase, with the following changes:
 - Removed Script-related classes
@@ -8,4 +8,6 @@ This is a clone of bitcore's codebase, with the following changes:
 - Removed Transaction Input, Output and related classes
 - Changed Transaction signing logic (using simpler scheme)
 - Transaction now has owner, previous transaction, color, position, version, signature
+- Miner class added 
+- Blockchain class added
 

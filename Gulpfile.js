@@ -2,6 +2,6 @@
 
 var gulp_bitcore = require('bitcore-build');
 
-gulp_bitcore('blockchain.js', {
+gulp_bitcore('decentraland-core', {
   fullname: true
 });

@@ -1,7 +1,7 @@
 {
-  "name": "blockchain.js",
+  "name": "decentraland-core",
   "version": "0.0.1",
-  "description": "Blockchain data structure implementation in JavaScript",
+  "description": "Blockchain-based decentralized land implementation in JavaScript",
   "main": "index.js",
   "author": "Manuel Araoz <manuelaraoz@gmail.com>",
   "scripts": {
@@ -59,11 +59,13 @@
   "keywords": [
     "blockchain",
     "transaction",
-    "p2p"
+    "p2p",
+    "land",
+    "decentralized"
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/maraoz/blockchain.js.git"
+    "url": "git://github.com/maraoz/decentraland-core.git"
   },
   "browser": {
     "request": "browser-request"

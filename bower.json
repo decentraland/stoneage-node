@@ -1,20 +1,22 @@
 {
-  "name": "bitcore",
-  "main": "./bitcore.min.js",
-  "version": "0.12.7",
-  "homepage": "http://bitcore.io",
+  "name": "decentraland-core",
+  "main": "./decentraland-core.min.js",
+  "version": "0.0.1",
+  "homepage": "http://decentraland.org",
   "authors": [
-    "BitPay, Inc."
+    "Manuel Araoz <manuelaraoz@gmail.com>",
+    "Esteban Ordano <eordano@gmail.com>"
   ],
-  "description": "A pure, powerful core for your bitcoin project.",
+  "description": "Blockchain-based decentralized land implementation in JavaScript ",
   "moduleType": [
     "globals"
   ],
   "keywords": [
-    "bitcoin",
-    "bitcore",
-    "btc",
-    "satoshi"
+    "blockchain",
+    "transaction",
+    "p2p",
+    "land",
+    "decentralized"
   ],
   "license": "MIT",
   "ignore": [

@@ -41,7 +41,7 @@ describe('Miner', function() {
     var n = 0;
     miner.on('block', function(block) {
       n += 1;
-      //console.log('block', block.header.height, block.id, block.header.nonce);
+      //console.log('block', block.header.height, block.id, 'nonce', block.header.nonce);
       block.header.validProofOfWork().should.equal(true);
       blockchain.push(block);
       block.header.height.should.equal(n);
@@ -152,7 +152,7 @@ describe('Miner', function() {
       block.transactions.length.should.equal(2);
       cb();
     });
-    for (var i = 0; i<100; i++) {
+    for (var i = 0; i < 100; i++) {
       miner.work();
     }
     var tx = new Transaction()
@@ -172,7 +172,7 @@ describe('Miner', function() {
       block.transactions.length.should.equal(3);
       cb();
     });
-    for (var i = 0; i<100; i++) {
+    for (var i = 0; i < 100; i++) {
       miner.work();
     }
     var tx = new Transaction()
@@ -181,7 +181,7 @@ describe('Miner', function() {
       .colored(0x00ff00ff)
       .sign(id);
     miner.addTransaction(tx);
-    for (i = 0; i<100; i++) {
+    for (i = 0; i < 100; i++) {
       miner.work();
     }
     var tx2 = new Transaction()
