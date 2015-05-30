@@ -46,20 +46,28 @@ describe('Transaction', function() {
   });
 
   it('should serialize and deserialize correctly a built transaction', function() {
+    var someone = new PrivateKey('690821300cad086e19dce9b7a6eb5278e8fcb33d658fb6663f191d12412239aa');
+    var coinbase = new Transaction()
+      .at(2, 3)
+      .to(someone.publicKey);
+
     var tx = new Transaction()
-      .from(testPrevTxID)
+      .from(coinbase)
       .to(testOwner)
       .colored(0xaabbccff)
-      .at(2, 3);
+      .sign(someone);
+
     var hex = tx.uncheckedSerialize();
     hex.toString('hex').should.equal(
       '01' + // version
-      testPrevTxID + // previous
+      coinbase.hash + // previous
       '02000000' +
       '03000000' +
       'ffccbbaa' +
       testOwner +
-      ''
+      '46' + // signature size
+      '30440220685f4dd87cd6c946e10d54f3255894c13d6bd73457e42c37b28a01a74fb96f75022019a6b' +
+      '830f449bdffa35c00a5885836b0e42f26524f84a48b63ced5b0f723bdd5'
     );
     (new Transaction(hex)).uncheckedSerialize().toString('hex').should.equal(hex);
   });
