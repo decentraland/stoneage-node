@@ -75,11 +75,11 @@ describe('Block', function() {
       var genesis = Block.genesis;
       var genesisTx = genesis.transactions[0];
 
-      genesisTx.id.should.equal('3c234320d73798faeb4656dea70fadb68ce2b21505517c20bac3e5052754360d');
+      genesisTx.id.should.equal('810ea4614b44d9c9e006393c9a1c42afaa1cd83055b04894d1367fc3b1cc29cd');
 
       genesis.validMerkleRoot().should.equal(true);
       genesis.header.validProofOfWork().should.equal(true);
-      genesis.id.should.equal('06ec85f9dbe641eb54976b91ef928aa28f6716fbce6d9551b5a3d61a7f607b91');
+      genesis.id.should.equal('000006411a7d6bace415af53374feee3adae7ff05f8f899b5829a17c8ef782d9');
     });
   });
 
@@ -87,6 +87,7 @@ describe('Block', function() {
 
     it('should return the correct inspect of the genesis block', function() {
       var block = new Block(testBlock);
+      console.log(block.hash);
       block.inspect().should.equal('<Block ' + testBlock.id + '>');
     });
 

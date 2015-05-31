@@ -49,7 +49,7 @@ describe('Miner', function() {
       nonce: 586080
     });
     miner.on('block', function(block) {
-      console.log(block.id);
+      block.id.should.equal(Block.genesis.id);
       cb();
     });
     miner.run();
@@ -186,7 +186,7 @@ describe('Miner', function() {
 
   it('mines first block without transactions and higher difficulty', function(cb) {
     opts.bits = 0x1e0fffff; // 00000fffff000000000000000000000000000000000000000000000000000000
-    opts.nonce = 1863499;
+    opts.nonce = 2561158;
     var miner = new Miner(opts);
     miner.on('block', function(block) {
       block.header.validProofOfWork().should.equal(true);
@@ -197,7 +197,7 @@ describe('Miner', function() {
 
   it('serializes and deserializes mined tx', function(cb) {
     opts.bits = 0x1e0fffff; // 00000fffff000000000000000000000000000000000000000000000000000000
-    opts.nonce = 1863499;
+    opts.nonce = 2561158;
     var miner = new Miner(opts);
     miner.on('block', function(block) {
       block.header.validProofOfWork().should.equal(true);
@@ -208,7 +208,7 @@ describe('Miner', function() {
 
   it('mines first block with one transaction and higher difficulty', function(cb) {
     opts.bits = 0x1e0fffff; // 00000fffff000000000000000000000000000000000000000000000000000000
-    opts.nonce = 1825806;
+    opts.nonce = 3170113;
     var miner = new Miner(opts);
     miner.on('block', function(block) {
       block.header.validProofOfWork().should.equal(true);
