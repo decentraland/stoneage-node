@@ -46,22 +46,30 @@ describe('Transaction', function() {
   });
 
   it('should serialize and deserialize correctly a built transaction', function() {
+    var someone = new PrivateKey('690821300cad086e19dce9b7a6eb5278e8fcb33d658fb6663f191d12412239aa');
+    var coinbase = new Transaction()
+      .at(2, 3)
+      .to(someone.publicKey);
+
     var tx = new Transaction()
-      .from(testPrevTxID)
+      .from(coinbase)
       .to(testOwner)
       .colored(0xaabbccff)
-      .at(2, 3);
-    var hex = tx.uncheckedSerialize();
-    hex.toString('hex').should.equal(
+      .sign(someone);
+
+    var hex = tx.toString();
+    hex.should.equal(
       '01' + // version
-      testPrevTxID + // previous
+      coinbase.hash + // previous
       '02000000' +
       '03000000' +
       'ffccbbaa' +
       testOwner +
-      ''
+      '46' + // signature size
+      '30440220685f4dd87cd6c946e10d54f3255894c13d6bd73457e42c37b28a01a74fb96f75022019a6b' +
+      '830f449bdffa35c00a5885836b0e42f26524f84a48b63ced5b0f723bdd5'
     );
-    (new Transaction(hex)).uncheckedSerialize().toString('hex').should.equal(hex);
+    (new Transaction(hex)).toString().should.equal(hex);
   });
 
   describe('sign', function() {
@@ -150,12 +158,12 @@ describe('Transaction', function() {
   });
 
   it('should serialize and deserialize correctly a coinbase transaction', function() {
-    var hex = '010000000000000000000000000000000000000000000000000000000000000000040000000500000000000000028bf7ee49d293d9517e8e98c05d2eb4f2649abb1d97d089c1717b986312781163';
+    var hex = '010000000000000000000000000000000000000000000000000000000000000000040000000500000000000000028bf7ee49d293d9517e8e98c05d2eb4f2649abb1d97d089c1717b98631278116300';
     var transaction = new Transaction(hex);
     transaction.uncheckedSerialize().should.equal(hex);
   });
   it('should serialize and deserialize correctly a regular transaction', function() {
-    var hex = '0138f7c7c01db041b613f492bb577030960bf520c3fdcb1204c07eaf90c7df98b304000000050000000000000002230a6509ec6649bc2b31fd197bac7e5f8eb12393e2676ec28ed3046cf43e72ab';
+    var hex = '0138f7c7c01db041b613f492bb577030960bf520c3fdcb1204c07eaf90c7df98b304000000050000000000000002230a6509ec6649bc2b31fd197bac7e5f8eb12393e2676ec28ed3046cf43e72ab00';
     var transaction = new Transaction(hex);
     transaction.uncheckedSerialize().should.equal(hex);
   });
