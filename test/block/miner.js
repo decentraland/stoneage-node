@@ -66,7 +66,7 @@ describe('Miner', function() {
     var n = 0;
     miner.on('block', function(block) {
       n += 1;
-      //console.log('block', block.header.height, block.id, 'nonce', block.header.nonce);
+      //console.log('block', block.height, block.id, 'nonce', block.nonce, 'bits', block.bits.toString(16));
       block.header.validProofOfWork().should.equal(true);
       blockchain.push(block);
       block.header.height.should.equal(n);
