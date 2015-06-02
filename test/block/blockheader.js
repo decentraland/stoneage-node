@@ -236,11 +236,12 @@ describe('BlockHeader', function() {
   });
 
 
-  describe.skip('getBits and getTargetDifficulty', function() {
+  describe('getBits and getTargetDifficulty', function() {
 
     var data = [
+      [0x1b0404cb, '00000000000404CB000000000000000000000000000000000000000000000000'],
       [0x207fffff, '7fffff0000000000000000000000000000000000000000000000000000000000'],
-      
+      [0x1e0fffff, '00000fffff000000000000000000000000000000000000000000000000000000'],
     ];
     _.each(data, function(datum) {
       var bits = datum[0];
@@ -248,8 +249,6 @@ describe('BlockHeader', function() {
       it('should work for ' + bits.toString(16), function() {
         BlockHeader.getTargetDifficulty(bits).toString('hex').should.equal(diff.toString('hex'));
         BlockHeader.getBits(diff).should.equal(bits);
-        BlockHeader.getTargetDifficulty(BlockHeader.getBits(diff)).should.equal(diff);
-        BlockHeader.getBits(BlockHeader.getTargetDifficulty(bits)).should.equal(bits);
       });
 
     });
