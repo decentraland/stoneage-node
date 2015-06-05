@@ -1,7 +1,7 @@
 {
   "name": "decentraland-core",
   "main": "./decentraland-core.min.js",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "homepage": "http://decentraland.org",
   "authors": [
     "Manuel Araoz <manuelaraoz@gmail.com>",
